@@ -2,7 +2,8 @@
 
 static void delay(volatile uint32_t count)
 {
-    while (count--) {
+    while (count--)
+    {
         __asm__("nop");
     }
 }
