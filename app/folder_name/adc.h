@@ -1,4 +1,4 @@
-#include "gpio.h"
+#include "stdint.h"
 
 #define APB2PERIPH_BASE (PERIPH_BASE + 0x00010000UL)  // 0x40010000
 #define ADC_BASE (APB2PERIPH_BASE + 0x2000UL)         // 0x40012000
