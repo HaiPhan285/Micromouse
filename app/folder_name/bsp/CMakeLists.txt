@@ -1,5 +1,7 @@
-# Placeholder CMakeLists.txt for BSP
-# No sources are currently present. Add your board source files here when ready.
+add_library_for(STM32 ${EXECUTABLE}_bsp hardware_specific.cc)
+target_include_directories_for(STM32 ${EXECUTABLE}_bsp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-# Example:
-# add_library(bsp_f411 f411_board.cc)
+target_link_libraries_for(STM32 ${EXECUTABLE}_bsp
+    driver
+    hal
+)

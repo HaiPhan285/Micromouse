@@ -1,13 +1,15 @@
-# add_subdirectory(platform/stm32f4) # Directory does not exist yet. Uncomment when ready.
+if(TARGET_DEVICE MATCHES "STM32")
+    add_subdirectory(platform/stm32)
+endif()
 
 add_library(driver INTERFACE)
 
 target_include_directories(driver INTERFACE
-    bus
-    io 
+    IO 
 )
 
-target_link_libraries(driver INTERFACE
-    hal
-    
-)
+if(TARGET hal)
+    target_link_libraries(driver INTERFACE
+        hal
+    )
+endif()
