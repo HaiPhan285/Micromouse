@@ -2,7 +2,18 @@
 #define ST_GPIO_H
 
 #include <stdint.h>
+
+#if defined(STM32F4)
 #include "stm32f4xx.h"
+#elif defined(STM32F7)
+#include "stm32f7xx.h"
+#elif defined(STM32L4)
+#include "stm32l4xx.h"
+#elif defined(STM32H5)
+#include "stm32h5xx.h"
+#else
+#error "Unsupported STM32 Family"
+#endif
 
 /*=====================================================
 GPIO ENUMS

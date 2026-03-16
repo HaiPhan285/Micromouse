@@ -7,30 +7,30 @@ CLOCK ENABLE
 void GPIO_ClockEnable(GPIO_TypeDef* port)
 {
     if (port == GPIOA)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+        __HAL_RCC_GPIOA_CLK_ENABLE();
     else if (port == GPIOB)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+        __HAL_RCC_GPIOB_CLK_ENABLE();
     else if (port == GPIOC)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+        __HAL_RCC_GPIOC_CLK_ENABLE();
 #ifdef GPIOD
     else if (port == GPIOD)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
+        __HAL_RCC_GPIOD_CLK_ENABLE();
 #endif
 #ifdef GPIOE
     else if (port == GPIOE)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
+        __HAL_RCC_GPIOE_CLK_ENABLE();
 #endif
 #ifdef GPIOF
     else if (port == GPIOF)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOFEN;
+        __HAL_RCC_GPIOF_CLK_ENABLE();
 #endif
 #ifdef GPIOG
     else if (port == GPIOG)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOGEN;
+        __HAL_RCC_GPIOG_CLK_ENABLE();
 #endif
 #ifdef GPIOH
     else if (port == GPIOH)
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOHEN;
+        __HAL_RCC_GPIOH_CLK_ENABLE();
 #endif
 }
 
