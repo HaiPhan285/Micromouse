@@ -5,7 +5,7 @@
 # `core` is defined in the parent `common/CMakeLists.txt` as an INTERFACE target.
 if (TARGET core)
 	target_link_libraries(core INTERFACE #folder targets
-		utils
-		periph
+	# utils
+		# periph
 	)
 endif()

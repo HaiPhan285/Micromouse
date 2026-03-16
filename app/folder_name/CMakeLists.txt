@@ -1,4 +1,3 @@
-
 set(EXECUTABLE folder_name)
 set(LDF ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE}.ld)
 
@@ -9,21 +8,17 @@ set(PREPROCESS_DEFS
 
 add_subdirectory_for(STM32 bsp)
 
-if (TARGET  ${TARGET_DEVICE}::${EXECUTABLE})
+add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
+    main.cc
+    ${STARTUP_FILE}
+)
 
-    add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
-        main.cc
-        ${STARTUP_FILE}
-    )
+target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE} #test
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-    target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE} #test
-        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-    )
+target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
+    ${EXECUTABLE}_bsp
+)
 
-    target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
-        ${TARGET_DEVICE}::${EXECUTABLE}_bsp
-    )
-
-    target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
-
-endif()
+target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
