@@ -1,12 +1,15 @@
 #include "board.h"
+#include <stdint.h>
 
 static void delay(volatile uint32_t count)
 {
     while(count--)
+    {
         __asm__("nop");
+    }
 }
 
-int main()
+int main(void)
 {
     Board_Init();
 
