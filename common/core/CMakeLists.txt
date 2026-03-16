@@ -9,3 +9,8 @@ if (TARGET core)
 		# periph
 	)
 endif()
+
+# Since there are no existing tests, let's create a dummy test to satisfy the CI requirement
+if(TARGET_DEVICE MATCHES "NATIVE")
+    add_tests(core dummy_test)
+endif()

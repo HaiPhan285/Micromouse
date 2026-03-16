@@ -1,9 +1,9 @@
-#include "board.h"
 #include <stdint.h>
+#include "board.h"
 
 static void delay(volatile uint32_t count)
 {
-    while(count--)
+    while (count--)
     {
         __asm__("nop");
     }
@@ -13,7 +13,7 @@ int main(void)
 {
     Board_Init();
 
-    while(1)
+    while (1)
     {
         Board_LED_Toggle();
         delay(500000);

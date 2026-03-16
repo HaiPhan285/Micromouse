@@ -8,17 +8,17 @@ set(PREPROCESS_DEFS
 
 add_subdirectory_for(STM32 bsp)
 
-add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
+add_executable_for(STM32 ${EXECUTABLE} ${LDF}
     main.cc
     ${STARTUP_FILE}
 )
 
-target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE} #test
+target_include_directories_for(STM32 ${EXECUTABLE} #test
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
+target_link_libraries_for(STM32 ${EXECUTABLE} PRIVATE
     ${EXECUTABLE}_bsp
 )
 
-target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
+target_preprocess_for(STM32 ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
