@@ -20,6 +20,7 @@ void Board_Init()
     cfg.pupd = ST_GPIO_PUPD_NONE;
 
     GPIO_Init(BOARD_LED_PORT, &cfg);
+    GPIO_WritePin(BOARD_LED_PORT, BOARD_LED_PIN, ST_GPIO_PIN_SET);  // Turn LED on
 }
 
 void Board_LED_Toggle(void)

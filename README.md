@@ -57,3 +57,11 @@ There are reference launch.json files found in the repository already under .vsc
 Write your MCU drivers in the `mcu_support/` directory. This template is intentionally minimal to allow you to add only what you need for your project.
 
 Install clang-format to auto-format your code - on Windows, try `<python> -m pip install clang-format`. On Linux, try `sudo apt install clang-format`. In VSCode, you can go to settings > Text Editor > Formatting > Format On Save to enable auto-formatting on save.
+
+
+command line:
+powershell: 
+ usbipd list
+ 0483:374b  ST-Link Debug, USB Mass Storage Device, STMicroelectronic...  Attached
+ wsl:
+./make.sh -t stm32f446re && st-flash --reset write build/stm32f446re/app/folder_name/folder_name.bin 0x8000000
