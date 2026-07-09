@@ -4,6 +4,9 @@ project(myapp
     LANGUAGES CXX C ASM
 )
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -21,6 +24,12 @@ if(MCU_NAME MATCHES "^(STM32).*")
     )
 endif()
 
+if ("${TARGET_APP}" STREQUAL "")
+    add_subdirectory(app)
+else()
+    add_subdirectory(app/${TARGET_APP})
+endif()
+
 add_subdirectory(common)
-add_subdirectory(app)
 add_subdirectory(mcu_support)
+
