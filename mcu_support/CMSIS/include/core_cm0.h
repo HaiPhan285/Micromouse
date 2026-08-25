@@ -1,8 +1,8 @@
 /**************************************************************************/ /**
  * @file     core_cm0.h
  * @brief    CMSIS Cortex-M0 Core Peripheral Access Layer Header File
- * @version  V5.0.8
- * @date     21. August 2019
+ * @version  V5.0.6
+ * @date     13. March 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
@@ -910,10 +910,9 @@ extern "C"
  */
     __STATIC_INLINE void __NVIC_SetVector(IRQn_Type IRQn, uint32_t vector)
     {
-        uint32_t* vectors = (uint32_t*)(NVIC_USER_IRQ_OFFSET
-                                        << 2); /* point to 1st user interrupt */
-        *(vectors + (int32_t)IRQn) =
-            vector; /* use pointer arithmetic to access vector */
+        uint32_t vectors = 0x0U;
+        (*(int*)(vectors + ((int32_t)IRQn + NVIC_USER_IRQ_OFFSET) * 4)) =
+            vector;
         /* ARM Application Note 321 states that the M0 does not require the architectural barrier */
     }
 
@@ -927,10 +926,9 @@ extern "C"
  */
     __STATIC_INLINE uint32_t __NVIC_GetVector(IRQn_Type IRQn)
     {
-        uint32_t* vectors = (uint32_t*)(NVIC_USER_IRQ_OFFSET
-                                        << 2); /* point to 1st user interrupt */
-        return *(vectors +
-                 (int32_t)IRQn); /* use pointer arithmetic to access vector */
+        uint32_t vectors = 0x0U;
+        return (uint32_t)(*(int*)(vectors +
+                                  ((int32_t)IRQn + NVIC_USER_IRQ_OFFSET) * 4));
     }
 
     /**

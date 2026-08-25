@@ -1,6 +1,16 @@
-# time driver module
-add_library(time STATIC)
-
-target_include_directories(time PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+add_library(driver_utils STATIC
+    delay.cc
 )
+
+target_include_directories(driver_utils PUBLIC
+    .
+)
+
+# For embedded builds: include device + CMSIS headers
+if (TARGET_DEVICE MATCHES "STM32")
+    target_include_directories(driver_utils PRIVATE
+        ${CMAKE_SOURCE_DIR}/mcu_support/stm32/f4xx
+        ${CMAKE_SOURCE_DIR}/mcu_support/CMSIS/include
+    )
+    target_link_libraries(driver_utils PUBLIC cmsis)
+endif()

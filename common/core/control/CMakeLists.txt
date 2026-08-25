@@ -1,10 +1,13 @@
-# control module
-add_library(control STATIC)
+add_library(control INTERFACE)
 
-target_include_directories(control PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+add_subdirectory(profile)
+add_subdirectory(sample)
+add_subdirectory(pid)
+add_subdirectory(motion)
 
-target_link_libraries(control PUBLIC
-    core
+target_link_libraries(control INTERFACE
+    profile
+    sample
+    pid
+    motion
 )

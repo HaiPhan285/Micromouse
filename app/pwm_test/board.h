@@ -1,4 +1,14 @@
-#ifndef BOARD_H_
-#define BOARD_H_
+#pragma once
 
-#endif  // BOARD_H_
+#include "pwm.h"
+
+namespace MM {
+
+struct Board {
+  Pwm& pwm;
+};
+
+bool bsp_init();
+Board& get_board();
+
+} // namespace MM

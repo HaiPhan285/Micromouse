@@ -1,25 +1,31 @@
-add_subdirectory(spi_test)
-add_subdirectory(blink)
-add_subdirectory(i2c_test)
-add_subdirectory(imu_test)
-add_subdirectory(w25q_test)
-add_subdirectory(pwm_test)
-add_subdirectory(usart_test)
-add_subdirectory(encoder_test)
-add_subdirectory(drv8231_test)
-add_subdirectory(adc_test)
-add_subdirectory(hc-05_test)
-add_subdirectory(timebase_test)
-add_subdirectory(ir_test)
-add_subdirectory(ir_single_test)
-add_subdirectory(pcb_blinky)
-add_subdirectory(motor_test)
-add_subdirectory(pid_controller)
-add_subdirectory(cli)
-add_subdirectory(nav_app)
-add_subdirectory(trap_test)
-add_subdirectory(ir_threshold_test)
+set(embedded_applications
+    adc_test
+    blink
+    cli
+    drv8231_test
+    encoder_test
+    hc-05_test
+    i2c_test
+    imu_test
+    ir_single_test
+    ir_test
+    ir_threshold_test
+    motor_test
+    nav_app
+    pcb_blinky
+    pid_controller
+    pwm_test
+    spi_test
+    timebase_test
+    trap_test
+    usart_test
+    w25q_test
+)
 
-if ("${TARGET_DEVICE}" MATCHES "NATIVE")
+if(TARGET_DEVICE STREQUAL "STM32F411")
+    foreach(application IN LISTS embedded_applications)
+        add_subdirectory(${application})
+    endforeach()
+elseif(TARGET_DEVICE STREQUAL "NATIVE")
     add_subdirectory(mms_sim)
 endif()

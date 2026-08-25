@@ -1,28 +1,9 @@
-set(EXECUTABLE w25q_test)
-set(LDF ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE}.ld)
-
-set(PREPROCESS_DEFS
-    -DDEF_FLASH_START_ADDR=0x8000000
-    -DDEF_FLASH_SIZE=1024K
+add_f411_firmware(w25q_test
+    BSP spi_app_bsp
+    BSP_DIRECTORY ${CMAKE_SOURCE_DIR}/app/spi_test/bsp_f411
+    INCLUDES
+        ${CMAKE_SOURCE_DIR}/app/spi_test
+        ${CMAKE_SOURCE_DIR}/app/spi_test/bsp_f411
+        ${CMAKE_SOURCE_DIR}/common/core/periph/w25q128
+    LIBRARIES core w25q128
 )
-
-add_subdirectory_for(STM32F411 bsp_f411)
-
-if (TARGET w25q_test_bsp)
-
-    add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
-        main.cc
-        ${STARTUP_FILE}
-    )
-
-    target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE}
-        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-    target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
-        w25q_test_bsp
-    )
-
-    target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
-
-endif()

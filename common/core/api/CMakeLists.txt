@@ -1,10 +1,15 @@
-# api module
-add_library(api STATIC)
+add_library(api STATIC
+    motioncontroller.cc
+)
 
 target_include_directories(api PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(api PUBLIC
-    core
+    irsensor
+    drv8231
+    pid
+    profile
+    sample
 )

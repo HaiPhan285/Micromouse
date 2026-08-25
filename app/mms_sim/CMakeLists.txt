@@ -1,28 +1,14 @@
-set(EXECUTABLE mms_sim)
-set(LDF ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE}.ld)
+if(NOT TARGET_DEVICE STREQUAL "NATIVE")
+    return()
+endif()
 
-set(PREPROCESS_DEFS
-    -DDEF_FLASH_START_ADDR=0x8000000
-    -DDEF_FLASH_SIZE=1024K
+add_executable(mms_sim
+    main.cc
+    sim/mms.cc
 )
 
-add_subdirectory_for(STM32F411 bsp_f411)
-
-if (TARGET mms_sim_bsp)
-
-    add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
-        main.cc
-        ${STARTUP_FILE}
-    )
-
-    target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE}
-        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-    target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
-        mms_sim_bsp
-    )
-
-    target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
-
-endif()
+target_include_directories(mms_sim PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/sim
+)
+target_link_libraries(mms_sim PRIVATE algorithm)

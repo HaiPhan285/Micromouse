@@ -1,4 +1,5 @@
-if(NOT NATIVE)
+if(NOT "${TARGET_DEVICE}" STREQUAL "NATIVE")
+    message("Including CMSIS subdirectory")
     add_subdirectory(CMSIS)
 endif()
 if (MCU_NAME MATCHES "^(STM32F4)[0-9]+")

@@ -1,10 +1,9 @@
-# utils module
-add_library(utils STATIC)
+add_library(utils STATIC
+    reg_helpers.cc
+)
 
 target_include_directories(utils PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(utils PUBLIC
-    core
-)
+# No dependencies needed for utils - it's a standalone utility library

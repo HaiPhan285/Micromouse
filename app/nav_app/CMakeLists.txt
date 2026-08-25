@@ -1,28 +1,10 @@
-set(EXECUTABLE nav_app)
-set(LDF ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE}.ld)
-
-set(PREPROCESS_DEFS
-    -DDEF_FLASH_START_ADDR=0x8000000
-    -DDEF_FLASH_SIZE=1024K
+add_f411_firmware(nav_app
+    BSP nav_bsp
+    INCLUDES
+        ${CMAKE_SOURCE_DIR}/common/core/navigation
+        ${CMAKE_SOURCE_DIR}/common/core/api
+        ${CMAKE_SOURCE_DIR}/common/core/periph/irsensor
+        ${CMAKE_SOURCE_DIR}/common/drivers/io
+        ${CMAKE_SOURCE_DIR}/common/drivers/time
+    LIBRARIES navigation api
 )
-
-add_subdirectory_for(STM32F411 bsp_f411)
-
-if (TARGET nav_app_bsp)
-
-    add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
-        main.cc
-        ${STARTUP_FILE}
-    )
-
-    target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE}
-        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-    target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
-        nav_app_bsp
-    )
-
-    target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
-
-endif()

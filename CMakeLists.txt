@@ -1,21 +1,21 @@
 cmake_minimum_required(VERSION 3.26)
 
-project(myapp
+project(micromouse
     LANGUAGES CXX C ASM
 )
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-Werror>)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 enable_testing()
 
 include(cmake/build-util.cmake)
+include(app/firmware.cmake)
 
-if(MCU_NAME MATCHES "^(STM32).*")
+if(MCU_NAME MATCHES "^STM32")
     message("Found STM32 Device!")
     add_compile_definitions(
         ${MCU_NAME}=TRUE
@@ -24,7 +24,7 @@ if(MCU_NAME MATCHES "^(STM32).*")
     )
 endif()
 
-if ("${TARGET_APP}" STREQUAL "")
+if("${TARGET_APP}" STREQUAL "")
     add_subdirectory(app)
 else()
     add_subdirectory(app/${TARGET_APP})
@@ -33,3 +33,6 @@ endif()
 add_subdirectory(common)
 add_subdirectory(mcu_support)
 
+if(TARGET_DEVICE STREQUAL "NATIVE")
+    add_subdirectory(tests)
+endif()

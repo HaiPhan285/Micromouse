@@ -1,4 +1,14 @@
-#ifndef BOARD_H_
-#define BOARD_H_
+#pragma once
 
-#endif  // BOARD_H_
+#include "gpio.h"
+#include "timebase.h"
+
+namespace MM {
+struct Board {
+  Gpio& pin;
+  Timebase& counter;
+};
+
+bool board_init();
+Board& get_board();
+} // namespace MM

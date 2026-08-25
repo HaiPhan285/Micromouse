@@ -1,4 +1,12 @@
-add_library(usart_test_bsp INTERFACE)
-target_link_libraries(usart_test_bsp INTERFACE
-    core
+add_library(usart_app_bsp STATIC
+    f411_board.cc
+)
+
+target_include_directories(usart_app_bsp PUBLIC
+  .
+  ../
+)
+
+target_link_libraries(usart_app_bsp PUBLIC
+    driver
 )

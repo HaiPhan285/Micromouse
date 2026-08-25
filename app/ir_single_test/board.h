@@ -1,4 +1,15 @@
-#ifndef BOARD_H_
-#define BOARD_H_
+#pragma once
+#include "adc.h"
+#include "dma.h"
+#include "gpio.h"
 
-#endif  // BOARD_H_
+namespace MM {
+struct Board {
+  Adc& adc;
+  Dma& dma;
+  Gpio& ir_led;
+};
+
+bool board_init();
+Board& get_board();
+} // namespace MM

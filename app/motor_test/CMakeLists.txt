@@ -1,28 +1,6 @@
-set(EXECUTABLE motor_test)
-set(LDF ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE}.ld)
-
-set(PREPROCESS_DEFS
-    -DDEF_FLASH_START_ADDR=0x8000000
-    -DDEF_FLASH_SIZE=1024K
+add_f411_firmware(motor_test
+    BSP motor_bsp
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/bsp_f411
+        ${CMAKE_SOURCE_DIR}/common/core/control/sample
 )
-
-add_subdirectory_for(STM32F411 bsp_f411)
-
-if (TARGET motor_test_bsp)
-
-    add_executable_for(${TARGET_DEVICE} ${EXECUTABLE} ${LDF}
-        main.cc
-        ${STARTUP_FILE}
-    )
-
-    target_include_directories_for(${TARGET_DEVICE} ${EXECUTABLE}
-        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-    target_link_libraries_for(${TARGET_DEVICE} ${EXECUTABLE} PRIVATE
-        motor_test_bsp
-    )
-
-    target_preprocess_for(${TARGET_DEVICE} ${EXECUTABLE} ${LINKER_SCRIPT} ${LDF} ${PREPROCESS_DEFS})
-
-endif()

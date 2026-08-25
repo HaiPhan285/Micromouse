@@ -1,4 +1,23 @@
-#ifndef BOARD_H_
-#define BOARD_H_
+/**
+ * @file board.h
+ * @brief IMU test board interface
+ * @author Bex Saw
+ * @date 10/21/2025
+ */
 
-#endif  // BOARD_H_
+#pragma once
+#include "bno055_imu.h"
+#include "delay.h"
+#include "gpio.h"
+#include "i2c.h"
+
+namespace MM {
+
+struct Board {
+  Bno055& imu;
+};
+
+bool bsp_init(void);
+Board& get_board(void);
+
+} // namespace MM

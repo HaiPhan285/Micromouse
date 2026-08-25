@@ -1,4 +1,3 @@
-
 function(add_executable_for DEVICE EXECUTABLE LINKER_SCRIPT)
     if ("${TARGET_DEVICE}" MATCHES "${DEVICE}")
         message("Adding executable: ${EXECUTABLE}")
@@ -22,8 +21,8 @@ function(add_executable_for DEVICE EXECUTABLE LINKER_SCRIPT)
                 POST_BUILD
                 COMMAND ${TOOLCHAIN_PREFIX}objcopy -O ihex ${EXECUTABLE} ${EXECUTABLE}.hex
                 COMMAND ${TOOLCHAIN_PREFIX}objcopy -O binary ${EXECUTABLE} ${EXECUTABLE}.bin
-                COMMAND ${TOOLCHAIN_PREFIX}objcopy -O srec ${EXECUTABLE} ${EXECUTABLE}.elf
-                COMMAND ${TOOLCHAIN_PREFIX}size --format=berkeley ${EXECUTABLE}.elf
+                COMMAND ${TOOLCHAIN_PREFIX}size --format=berkeley ${EXECUTABLE}
+                VERBATIM
             )
         endif()
     endif()
@@ -70,42 +69,8 @@ function(target_preprocess_for DEVICE EXECUTABLE SRC_FILE OUT_FILE)
         message("Preprocessing: ${SRC_FILE} -> ${OUT_FILE}")
         add_custom_command(TARGET ${EXECUTABLE}
             PRE_BUILD
-            COMMAND arm-none-eabi-gcc -E -P -x c ${SRC_FILE} -o ${OUT_FILE} ${ARGN}
+            COMMAND ${CMAKE_C_COMPILER} -E -P -x c ${SRC_FILE} -o ${OUT_FILE} ${ARGN}
+            VERBATIM
         )
-    endif()
-endfunction()
-
-function(get_directories VAR PATH)
-    set(TEMP "")
-    file(GLOB_RECURSE DIRECTORIES LIST_DIRECTORIES true "${PATH}/*")
-    foreach(DIR ${DIRECTORIES})
-        if (IS_DIRECTORY ${DIR})
-            list(APPEND TEMP ${DIR})
-        endif()
-    endforeach()
-    set(${VAR} ${TEMP} PARENT_SCOPE)
-endfunction()
-
-function(add_tests LINK_LIB)
-    if ("${TARGET_DEVICE}" MATCHES "NATIVE")
-
-        include(CTest)
-        include(GoogleTest)
-
-        foreach(SRC_NAME ${ARGN})
-
-            add_executable(${SRC_NAME}
-                ${SRC_NAME}.cc
-            )
-
-            target_link_libraries(${SRC_NAME}
-                GTest::gtest_main
-                ${LINK_LIB}
-            )
-
-            gtest_discover_tests(${SRC_NAME})
-            add_test(NAME ${SRC_NAME} COMMAND ${SRC_NAME})
-
-        endforeach()
     endif()
 endfunction()

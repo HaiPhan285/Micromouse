@@ -1,4 +1,13 @@
-add_library(pwm_test_bsp INTERFACE)
-target_link_libraries(pwm_test_bsp INTERFACE
+add_library(pwm_bsp STATIC
+    f411_board.cc
+)
+
+target_include_directories(pwm_bsp PUBLIC
+  .
+  ../
+)
+
+target_link_libraries(pwm_bsp PUBLIC
+    driver
     core
 )
