@@ -1,59 +1,54 @@
-# MCU Driver Template
+# Micromouse 2026
 
-Welcome to the generic MCU driver template! This repository provides a minimal CMake-based structure for writing and organizing MCU drivers. Only the essential build scripts, CMake configuration, and mcu_support/ folder are included (only f4,f7,h5,l4).
+Firmware and native simulation tools for the XuperM Micromouse, built around the STM32F411.
 
-# Need more info?
+## Repository layout
 
-If you want a step-by-step guide to setting up STM32 projects bare-metal (without CubeIDE), check out this helpful article:
-[STM32 Without CubeIDE: The Bare Necessities](https://kleinembedded.com/stm32-without-cubeide-part-1-the-bare-necessities/)
+- `app/` contains hardware test programs, the navigation application, CLI, and native simulator.
+- `common/core/` contains maze solving, motion control, navigation, and peripheral abstractions.
+- `common/drivers/` contains portable interfaces and STM32F4 implementations.
+- `mcu_support/` contains CMSIS, STM32 HAL sources, startup code, and linker scripts.
+- `cmake/` contains the cross-compilation toolchain and shared CMake helpers.
 
----
+## Prerequisites
 
-# MCU Driver Template
+Install CMake 3.26 or newer, Ninja, and clang-format 17 or newer. Embedded builds also require the Arm GNU toolchain (`arm-none-eabi-gcc`).
 
-Welcome to the generic MCU driver template! This repository provides a minimal CMake-based structure for writing and organizing MCU drivers. Only the essential build scripts, CMake configuration, and mcu_support/ folder are included.
+## Build
 
-## Quick Start for New Members
+Build all STM32F411 applications:
 
-1. Clone this repository.
-2. Install the prerequisites below.
-3. Use the provided scripts to build for your target MCU.
-4. Write your ST specific drivers in the `platform/` folder. Write your test drivers in `app/`. Add as much folder as you need but please account for cmake and compiling tree.
-5. If you get stuck, check the link above or ask a teammate/leads/mentors!
+```sh
+./make.sh -t stm32f411
+```
 
-## Installing Prerequisites
-First, install the arm toolchain. If you are on a Unix system, simply use your package installer, for example in Ubuntu: `sudo apt-get install arm-none-eabi-gcc`.
-On Windows, you can download it from online, try [here](https://developer.arm.com/downloads/-/gnu-rm) - you may have to add it to your path. Make sure it worked: `arm-none-eabi-gcc --version`
+Build one application:
 
-If you want to cross-compile for 32-bit RPI, also install the arm32 toolchain: `gcc-arm-linux-gnueabihf`.
-On Windows, try [here](https://developer.arm.com/downloads/-/gnu-a). Make sure it worked: `arm-linux-gnueabihf-gcc --version`
+```sh
+./make.sh -t stm32f411 -a nav_app
+```
 
-Next, install CMake. `sudo apt-get install cmake`
-On Windows, try [here](https://cmake.org/download/). Again, may have to add to path.
-Make sure it worked: `cmake --version`
+Use `-r` for a release build and `-c` to remove the selected build directory before configuring. Windows users can run the equivalent `make.ps1` commands.
 
-Also, install Ninja `sudo apt-get install ninja-build`
-On Windows, try [here](https://github.com/ninja-build/ninja/releases). Same with adding to path.
-Make sure it worked: `ninja --version`
+Build the native simulator and portable libraries:
 
-## Building
-To build:
-If you are on Windows, use the `.ps1` script in powershell. If on Linux, use the `.sh` script. The minimum parameters look like this:
-`./make.ps1 -t <name of preset>`.
-For example, `./make.ps1 -t stm32f746` (see CMakePresets.json).
+```sh
+./make.sh -t native
+```
 
-For a clean build, do:
-`./make.ps1 -t <name of preset> -c`
+Run native tests after building:
 
-Builds are by default done in Debug mode, but Release mode can be selected with the -r parameter: `./make.ps1 -t stm32f746 -r`
+```sh
+ctest --test-dir build/native --output-on-failure
+```
 
-## Debugging
-To debug, make sure you have openocd installed `sudo apt-get install openocd`
-On Windows, try [here](https://openocd.org/pages/getting-openocd.html). Also may have to add to path.
-Additionally, grab the cortex-debug extension for VSCode.
-There are reference launch.json files found in the repository already under .vscode.
+## Development checks
 
-## Developing Drivers
-Write your MCU drivers in the `mcu_support/` directory. This template is intentionally minimal to allow you to add only what you need for your project.
+```sh
+./format_check.sh
+cmake --preset native -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/native
+ctest --test-dir build/native --output-on-failure
+```
 
-Install clang-format to auto-format your code - on Windows, try `<python> -m pip install clang-format`. On Linux, try `sudo apt install clang-format`. In VSCode, you can go to settings > Text Editor > Formatting > Format On Save to enable auto-formatting on save.
+Hardware calibration work and known limitations are tracked in [`todo.md`](todo.md).

@@ -1,2 +1,6 @@
-# This script verifies the formatting in the target directories.
-find app common -iname '*.h' -o -iname '*.c' -o -iname '*.cc' | xargs clang-format --dry-run -Werror
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+find app common tests -type f \( -name '*.h' -o -name '*.c' -o -name '*.cc' \) -print0 \
+  | xargs -0 --no-run-if-empty clang-format --dry-run --Werror

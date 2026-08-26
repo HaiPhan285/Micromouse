@@ -1,24 +1,28 @@
 param (
-    [Parameter(Mandatory=$true)][string]$t,
+    [Parameter(Mandatory=$true)]
+    [ValidatePattern('^[A-Za-z0-9._-]+$')]
+    [string]$t,
     [Parameter(Mandatory=$false)][string]$a,
     [switch]$c=$false,
     [switch]$r=$false
 )
 
-if ( $c )
-{
-    echo "Performing clean build..."
-    rm -R -Force build/$t
+$ErrorActionPreference = "Stop"
+$buildDirectory = Join-Path "build" $t
+
+$mode = "Debug"
+
+if ($r) {
+    $mode = "Release"
 }
 
-$mode="Debug"
-
-if ( $r )
-{
-    $mode="Release"
+if ($c -and (Test-Path -LiteralPath $buildDirectory)) {
+    Write-Host "Removing $buildDirectory"
+    Remove-Item -LiteralPath $buildDirectory -Recurse -Force
 }
 
-cmake --preset=$t -DTARGET_APP="$a" -DCMAKE_BUILD_TYPE="$mode"
-pushd build/$t
-cmake --build .
-popd
+cmake --preset $t "-DTARGET_APP=$a" "-DCMAKE_BUILD_TYPE=$mode"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+cmake --build $buildDirectory
+exit $LASTEXITCODE

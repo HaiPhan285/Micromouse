@@ -1,0 +1,1 @@
+add_f411_firmware(ir_single_test COPY_ELF BSP ir_single_bsp)
