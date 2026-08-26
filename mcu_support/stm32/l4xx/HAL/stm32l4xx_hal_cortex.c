@@ -67,7 +67,7 @@
 
   The table below gives the allowed values of the pre-emption priority and subpriority according
   to the Priority Grouping configuration performed by HAL_NVIC_SetPriorityGrouping() function.
-  
+
     ==========================================================================================================================
       NVIC_PriorityGroup   | NVIC_IRQChannelPreemptionPriority | NVIC_IRQChannelSubPriority  |       Description
     ==========================================================================================================================
@@ -76,15 +76,15 @@
     --------------------------------------------------------------------------------------------------------------------------
      NVIC_PRIORITYGROUP_1  |                0-1                |            0-7              | 1 bit for pre-emption priority
                            |                                   |                             | 3 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
+    --------------------------------------------------------------------------------------------------------------------------
      NVIC_PRIORITYGROUP_2  |                0-3                |            0-3              | 2 bits for pre-emption priority
                            |                                   |                             | 2 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
+    --------------------------------------------------------------------------------------------------------------------------
      NVIC_PRIORITYGROUP_3  |                0-7                |            0-1              | 3 bits for pre-emption priority
                            |                                   |                             | 1 bit for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
+    --------------------------------------------------------------------------------------------------------------------------
      NVIC_PRIORITYGROUP_4  |                0-15               |            0                | 4 bits for pre-emption priority
-                           |                                   |                             | 0 bit for subpriority                       
+                           |                                   |                             | 0 bit for subpriority
     ==========================================================================================================================
 
   ******************************************************************************
@@ -240,7 +240,7 @@ void HAL_NVIC_SystemReset(void)
 }
 
 /**
-  * @brief  Initialize the System Timer with interrupt enabled and start the System Tick Timer (SysTick): 
+  * @brief  Initialize the System Timer with interrupt enabled and start the System Tick Timer (SysTick):
   *         Counter is in free running mode to generate periodic interrupts.
   * @param  TicksNumb: Specifies the ticks Number of ticks between two interrupts.
   * @retval status:  - 0  Function succeeded.
@@ -420,8 +420,8 @@ __weak void HAL_SYSTICK_Callback(void)
 #if (__MPU_PRESENT == 1)
 /**
   * @brief  Enable the MPU.
-  * @param  MPU_Control: Specifies the control mode of the MPU during hard fault, 
-  *          NMI, FAULTMASK and privileged accessto the default memory 
+  * @param  MPU_Control: Specifies the control mode of the MPU during hard fault,
+  *          NMI, FAULTMASK and privileged accessto the default memory
   *          This parameter can be one of the following values:
   *            @arg MPU_HFNMI_PRIVDEF_NONE
   *            @arg MPU_HARDFAULT_NMI

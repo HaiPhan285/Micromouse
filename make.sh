@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 # Function to display usage
 usage() {
@@ -13,7 +15,7 @@ MODE="Debug"
 CLEAN=0
 
 # Parse command-line arguments
-while getopts ":t:a:r:c:" opt; do
+while getopts ":t:a:rc" opt; do
   case ${opt} in
     ( t )
       TARGET="$OPTARG"
@@ -21,35 +23,32 @@ while getopts ":t:a:r:c:" opt; do
     ( a )
       APP="$OPTARG"
       ;;
-    ( \? )
+    (r)
+      MODE="Release"
+      ;;
+    (c)
+      CLEAN=1
+      ;;
+    (\?)
       echo "Invalid option: -$OPTARG" 1>&2
       usage
       ;;
-    ( : )
-      if [[ "$OPTARG" == "c" ]]; then
-        CLEAN=1
-      elif [[ "$OPTARG" == "r" ]]; then
-        MODE="Release"
-      else
-        echo "Option -$OPTARG requires an argument." 1>&2
-        usage
-      fi
+    (:)
+      echo "Option -$OPTARG requires an argument." 1>&2
+      usage
       ;;
   esac
 done
 
 # Check if the target name is provided
-if [ -z "$TARGET" ]; then
+if [[ -z "$TARGET" || ! "$TARGET" =~ ^[A-Za-z0-9._-]+$ ]]; then
   usage
 fi
 
-if [ "$CLEAN" == 1 ]; then
-    echo "Performing clean build..."
-    rm -rf build/$TARGET
+if ((CLEAN)); then
+  echo "Removing build/$TARGET"
+  rm -rf -- "build/$TARGET"
 fi
 
-cmake --preset=$TARGET -DTARGET_APP=$APP -DCMAKE_BUILD_TYPE=$MODE
-pushd build/$TARGET
-cmake --build .
-popd
-ln -sf build/$TARGET/compile_commands.json compile_commands.json
+cmake --preset "$TARGET" -DTARGET_APP="$APP" -DCMAKE_BUILD_TYPE="$MODE"
+cmake --build "build/$TARGET"

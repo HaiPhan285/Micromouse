@@ -1,0 +1,1 @@
+add_f411_firmware(timebase_test BSP timebase_bsp)

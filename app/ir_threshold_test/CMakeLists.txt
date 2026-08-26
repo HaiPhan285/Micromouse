@@ -1,0 +1,1 @@
+add_f411_firmware(ir_threshold_test BSP ir_threshold_bsp)

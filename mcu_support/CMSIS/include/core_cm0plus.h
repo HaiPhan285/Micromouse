@@ -1,8 +1,8 @@
 /**************************************************************************/ /**
  * @file     core_cm0plus.h
  * @brief    CMSIS Cortex-M0+ Core Peripheral Access Layer Header File
- * @version  V5.0.9
- * @date     21. August 2019
+ * @version  V5.0.7
+ * @date     13. March 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
@@ -306,8 +306,8 @@ extern "C"
     {
         struct
         {
-            uint32_t
-                nPRIV : 1; /*!< bit:      0  Execution privilege in Thread mode */
+            uint32_t nPRIV
+                : 1; /*!< bit:      0  Execution privilege in Thread mode */
             uint32_t SPSEL : 1;       /*!< bit:      1  Stack to be used */
             uint32_t _reserved1 : 30; /*!< bit:  2..31  Reserved */
         } b;                          /*!< Structure used for bit  access */
@@ -1056,14 +1056,12 @@ extern "C"
     __STATIC_INLINE void __NVIC_SetVector(IRQn_Type IRQn, uint32_t vector)
     {
 #if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
-        uint32_t* vectors = (uint32_t*)SCB->VTOR;
-        vectors[(int32_t)IRQn + NVIC_USER_IRQ_OFFSET] = vector;
+        uint32_t vectors = SCB->VTOR;
 #else
-    uint32_t* vectors = (uint32_t*)(NVIC_USER_IRQ_OFFSET
-                                    << 2); /* point to 1st user interrupt */
-    *(vectors + (int32_t)IRQn) =
-        vector; /* use pointer arithmetic to access vector */
+    uint32_t vectors = 0x0U;
 #endif
+        (*(int*)(vectors + ((int32_t)IRQn + NVIC_USER_IRQ_OFFSET) * 4)) =
+            vector;
         /* ARM Application Note 321 states that the M0+ does not require the architectural barrier */
     }
 
@@ -1078,14 +1076,12 @@ extern "C"
     __STATIC_INLINE uint32_t __NVIC_GetVector(IRQn_Type IRQn)
     {
 #if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
-        uint32_t* vectors = (uint32_t*)SCB->VTOR;
-        return vectors[(int32_t)IRQn + NVIC_USER_IRQ_OFFSET];
+        uint32_t vectors = SCB->VTOR;
 #else
-    uint32_t* vectors = (uint32_t*)(NVIC_USER_IRQ_OFFSET
-                                    << 2); /* point to 1st user interrupt */
-    return *(vectors +
-             (int32_t)IRQn); /* use pointer arithmetic to access vector */
+    uint32_t vectors = 0x0U;
 #endif
+        return (uint32_t)(*(int*)(vectors +
+                                  ((int32_t)IRQn + NVIC_USER_IRQ_OFFSET) * 4));
     }
 
     /**
