@@ -8,26 +8,22 @@
 namespace MM {
 namespace Stmf4 {
 
-// PA7 — IR LED emitter
 StGpioSettings led_settings{GpioMode::GPOUT, GpioOtype::PUSH_PULL, GpioOspeed::VERY_HIGH,
                             GpioPupd::NO_PULL, 0};
 StGpioParams led_params{7, GPIOA, led_settings};
 HwGpio ir_led{led_params};
 
-// PB1 — Phototransistor (ADC1 channel 9)
 StGpioSettings pt_settings{GpioMode::ANALOG, GpioOtype::PUSH_PULL, GpioOspeed::VERY_HIGH,
                            GpioPupd::NO_PULL, 0};
 StGpioParams pt_params{1, GPIOB, pt_settings};
 HwGpio phototrans{pt_params};
 
-// DMA2 stream 0 channel 0 — ADC1 peripheral to memory
 StDmaSettings dma_settings{DmaChSel::CH0, DmaPriority::VERY_HIGH, DmaWidth::HALF_WORD,
                            DmaDataDir::PERIPH_TO_MEM};
 StDmaParams dma_params{dma_settings, DMA2, DMA2_Stream0,
                        static_cast<uint32_t>(reinterpret_cast<std::uintptr_t>(&ADC1->DR))};
 HwDma dma{dma_params};
 
-// ADC1 — single channel 9, software trigger, no overrun interrupt
 std::array<uint8_t, 1> adc_seq{9};
 AdcChCycles ch9_cycles{.ch = 9, .cycles = AdcCycles::CYCLES_480};
 std::array<AdcChCycles, 1> adc_ch_cycles{ch9_cycles};

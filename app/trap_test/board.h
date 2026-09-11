@@ -1,8 +1,3 @@
-/**
- * @file board.h
- * @brief Trap test board interface — MotionController, USART, start button.
- * @author Bex Saw
- */
 
 #pragma once
 

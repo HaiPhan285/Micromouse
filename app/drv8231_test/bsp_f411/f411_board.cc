@@ -12,13 +12,11 @@ Stmf4::StGpioSettings motor_pwm_settings{Stmf4::GpioMode::AF, Stmf4::GpioOtype::
 Stmf4::StPwmSettings pwm_settings{Stmf4::PwmMode::EDGE_ALIGNED, Stmf4::PwmOutputMode::PWM_MODE_1,
                                   Stmf4::PwmDir::UPCOUNTING};
 
-/// MOTOR: RIGHT — PA2 (TIM2_CH3), PA3 (TIM2_CH4)
 const Stmf4::StGpioParams in1_params_left{2, GPIOA, motor_pwm_settings}; // PA2
 const Stmf4::StGpioParams in2_params_left{3, GPIOA, motor_pwm_settings}; // PA3
 const Stmf4::StPwmParams pwm1_params_left{TIM2, Stmf4::PwmChannel::CH3, pwm_settings, 32000000};
 const Stmf4::StPwmParams pwm2_params_left{TIM2, Stmf4::PwmChannel::CH4, pwm_settings, 32000000};
 
-/// MOTOR: LEFT — PA15 (TIM2_CH1), PB3 (TIM2_CH2)
 const Stmf4::StGpioParams in1_params_right{3, GPIOB, motor_pwm_settings};  // PB3
 const Stmf4::StGpioParams in2_params_right{15, GPIOA, motor_pwm_settings}; // PA15
 const Stmf4::StPwmParams pwm1_params_right{TIM2, Stmf4::PwmChannel::CH2, pwm_settings, 32000000};

@@ -10,18 +10,14 @@ int main(int argc, char* argv[]) {
   board_init();
   Board hw = get_board();
 
-  // Create timebase object using TIM5
   StTimebaseParams tb_params = {TIM5};
   Stmf4::HwTimebase timebase(tb_params);
 
-  // Enable clock for TIM5
   RCC->APB1ENR |= RCC_APB1ENR_TIM5EN;
 
-  // Initialize timebase (50MHz PCLK, 1MHz timer frequency)
   timebase.init(50'000'000, 1'000'000, std::chrono::microseconds(0xFFFFFFFF));
   timebase.start();
 
-  // Bind timebase to use delay functions
   Utils::bind_timebase(timebase);
 
   while (1) {

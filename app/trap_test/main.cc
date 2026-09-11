@@ -1,8 +1,3 @@
-/**
- * @file main.cc
- * @brief Trap test — button press runs F L F L F R F via MotionController.
- * @author Bex Saw
- */
 
 #include "board.h"
 #include "delay.h"
@@ -29,7 +24,6 @@ int main() {
   Board& hw = get_board();
 
   while (1) {
-    // Wait for button press (active low)
     while (hw.start_bt.read() != 0) {
     }
     Utils::delay_ms(50);

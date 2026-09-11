@@ -1,9 +1,3 @@
-/**
- * @file main.cc
- * @author Bex Saw
- * @brief DRV8231 motor driver test application
- * @version 0.1
- */
 
 #include "board.h"
 #include "common/drivers/time/delay.h"

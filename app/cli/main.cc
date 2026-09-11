@@ -1,8 +1,3 @@
-/**
- * @file main.cc
- * @brief CLI app — button-triggered search and zoom runs with full nav+motion pipeline.
- * @author Bex Saw
- */
 
 #include "board.h"
 #include "cli.h"

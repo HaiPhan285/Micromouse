@@ -3,7 +3,6 @@
 #include "st_sys_clk.h"
 #include "st_timebase.h"
 
-// Global flag
 bool set = false;
 
 namespace {
@@ -29,19 +28,15 @@ Board board{.pin = Stmf4::gpio, .counter = Stmf4::timebase};
 bool board_init() {
   bool result = true;
 
-  // Init sysclk
   result = result && Stmf4::sysclk.init();
   uint32_t hclk = Stmf4::sysclk.get_freq();
 
-  // Periph clock inits
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
   RCC->APB1ENR |= RCC_APB1ENR_TIM5EN;
 
-  // Peripheral inits
   result = result && Stmf4::gpio.init();
   result = result && Stmf4::timebase.init(hclk, kTimerFreq, kTimerPeriod, true);
 
-  // Enable TIM5 interrupt in NVIC
   NVIC_EnableIRQ(TIM5_IRQn);
   NVIC_SetPriority(TIM5_IRQn, 0);
 
@@ -53,7 +48,6 @@ Board& get_board() {
 }
 
 extern "C" void TIM5_IRQHandler() {
-  // Clear the update interrupt flag
   TIM5->SR &= ~TIM_SR_UIF;
 
   bool result = Stmf4::gpio.toggle();

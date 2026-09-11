@@ -1,9 +1,3 @@
-/**
- * @file main.cc
- * @brief IMU Test Application Main File
- * @author Bex Saw
- * @date 2025-10-21
- */
 
 #include "bno055_imu.h"
 #include "board.h"

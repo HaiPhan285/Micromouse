@@ -8,8 +8,6 @@
 #include "st_usart.h"
 #include <array>
 
-// ADC IRQ will set this to true if there is overrun, then we can just handle it with
-// board_recover()
 volatile bool g_adc_ovr = false;
 
 namespace MM {
@@ -19,7 +17,6 @@ StGpioSettings ir_led_settings{GpioMode::GPOUT, GpioOtype::PUSH_PULL, GpioOspeed
 StGpioParams ir_led_params{4, GPIOA, ir_led_settings};
 HwGpio ir_led{ir_led_params};
 
-// ADC1 channel 8 maps to PB0 on STM32F411.
 StGpioSettings phototrans_settings{GpioMode::ANALOG, GpioOtype::PUSH_PULL, GpioOspeed::LOW,
                                    GpioPupd::NO_PULL, 0};
 StGpioParams phototrans_params{0, GPIOB, phototrans_settings};
@@ -56,7 +53,6 @@ StUsartSettings usart_settings{UsartOversample::X8, UsartSampleMode::SINGLE};
 StUsartParams usart_params{USART2, clk.get_freq(), 115200, usart_settings};
 StUsart usart{usart_params};
 
-// Delay setup
 StTimebaseParams delay_params{TIM5};
 HwTimebase delay{delay_params};
 
@@ -76,21 +72,17 @@ Board board{.adc = MM::Stmf4::adc,
 bool board_init() {
   bool result = true;
 
-  // Keep watchdog IRQ disabled during adc_test bring-up
   NVIC_DisableIRQ(WWDG_IRQn);
   NVIC_ClearPendingIRQ(WWDG_IRQn);
 
-  // Init SYSCLK/HCLK and configure prescalers for APB1 and APB2
   result &= Stmf4::clk.init();
   result &= Stmf4::usart.set_clock_freq(Stmf4::clk.get_freq());
 
-  // Init Periph Clks
   RCC->AHB1ENR |= (RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_DMA2EN);
   RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
   RCC->APB1ENR |= RCC_APB1ENR_TIM5EN;
   RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
 
-  // Init Periphs
   result &= Stmf4::ir_led.init();
   result &= Stmf4::phototrans.init();
   result &= Stmf4::tx.init();
@@ -99,7 +91,6 @@ bool board_init() {
   result &= Stmf4::usart.init();
   result &= Stmf4::delay.init(50'000'000u, 1'000'000u, std::chrono::microseconds(4'294'967u));
 
-  // Bind timebase to use delay functions
   Utils::bind_timebase(Stmf4::delay);
 
   return result;
@@ -110,10 +101,8 @@ Board& get_board() {
 }
 
 extern "C" void USART2_IRQHandler(void) {
-  // Check if data is available
   if (Stmf4::usart.get_addr()->SR & USART_SR_RXNE) {
     if (board.usart.receive(rx_byte)) {
-      // received 1 byte, echo it back
       std::span<const uint8_t> tx_span(&rx_byte, 1);
       board.usart.send(tx_span);
     }
@@ -121,7 +110,6 @@ extern "C" void USART2_IRQHandler(void) {
 }
 
 extern "C" void WWDG_IRQHandler(void) {
-  // Clear early wakeup interrupt flag and return.
   WWDG->SR = 0u;
 }
 }; // namespace MM

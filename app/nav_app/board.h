@@ -1,8 +1,3 @@
-/**
- * @file board.h
- * @brief Navigation app board interface.
- * @author Bex Saw
- */
 
 #pragma once
 

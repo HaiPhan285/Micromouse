@@ -1,9 +1,3 @@
-/**
- * @file board.h
- * @brief Drv8231 test board interface
- * @author Bex Saw
- * @date 3/20/2026
- */
 
 #pragma once
 

@@ -39,21 +39,16 @@ StEncoderSettings enc_settings_right{.mode = EncMode::MODE_3,
 
 StUsartSettings usart_settings{UsartOversample::X8, UsartSampleMode::SINGLE};
 
-// Left motor:  PA2 = TIM2_CH3, PA3 = TIM2_CH4
-// Left encoder: PB7 = TIM4_CH2 (A), PB6 = TIM4_CH1 (B)
 StGpioParams in1_left_params{2, GPIOA, motor_pwm_settings};
 StGpioParams in2_left_params{3, GPIOA, motor_pwm_settings};
 StGpioParams enc_left_ch1_params{6, GPIOB, enc_input_settings}; // PB6 = B
 StGpioParams enc_left_ch2_params{7, GPIOB, enc_input_settings}; // PB7 = A
 
-// Right motor: PA15 = TIM2_CH1, PB3 = TIM2_CH2
-// Right encoder: PC6 = TIM3_CH1 (A), PB5 = TIM3_CH2 (B)
 StGpioParams in1_right_params{15, GPIOA, motor_pwm_settings};
 StGpioParams in2_right_params{3, GPIOB, motor_pwm_settings};
 StGpioParams enc_right_ch1_params{6, GPIOC, enc_input_settings}; // PC6 = A
 StGpioParams enc_right_ch2_params{5, GPIOB, enc_input_settings}; // PB5 = B
 
-// USART1: PA9 = TX, PA10 = RX (AF7)
 StGpioParams usart_tx_params{9, GPIOA, usart_gpio_settings};
 StGpioParams usart_rx_params{10, GPIOA, usart_gpio_settings};
 
@@ -93,12 +88,6 @@ StUsart usart{usart_params};
 Drv8231 motor_left(Stmf4::pwm1_left, Stmf4::pwm2_left);
 Drv8231 motor_right(Stmf4::pwm2_right, Stmf4::pwm1_right);
 
-/*
- * Pin mapping
- *  LEFT  — PA2(TIM2_CH3) PA3(TIM2_CH4) | PB7(TIM4_CH2 A) PB6(TIM4_CH1 B)
- *  RIGHT — PA15(TIM2_CH1) PB3(TIM2_CH2) | PC6(TIM3_CH1 A) PB5(TIM3_CH2 B)
- *  USART1 — PA9(TX) PA10(RX)
- */
 Board board{.encoder_left = Stmf4::encoder_left,
             .pwm1_left = Stmf4::pwm1_left,
             .pwm2_left = Stmf4::pwm2_left,

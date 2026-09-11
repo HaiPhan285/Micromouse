@@ -1,4 +1,3 @@
-// STM32F4 blink board implementation matching LBR L4 style
 #include "../../../common/drivers/platform/stm32f4/st_gpio.h"
 #include "../../../mcu_support/stm32/f4xx/stm32f4xx.h"
 #include "board.h"
