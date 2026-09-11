@@ -7,7 +7,6 @@
 
 namespace MM {
 
-// USART2 pin config
 Stmf4::StGpioSettings gpio_settings{Stmf4::GpioMode::AF, Stmf4::GpioOtype::PUSH_PULL,
                                     Stmf4::GpioOspeed::HIGH, Stmf4::GpioPupd::NO_PULL, 7};
 
@@ -38,17 +37,14 @@ bool bsp_init() {
   ret &= clock.init();
   usart.set_clock_freq(clock.get_freq());
 
-  // Enable peripheral clocks for GPIOA, USART1, and USART2
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
   RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
   RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
 
-  // Initialize USART and pins
   ret &= tx_gpio.init();
   ret &= rx_gpio.init();
   ret &= usart.init();
 
-  // Enable USART2 interrupt in NVIC
   NVIC_SetPriority(USART2_IRQn, 0);
   NVIC_EnableIRQ(USART2_IRQn);
 
@@ -59,13 +55,9 @@ Board& get_board() {
   return board;
 }
 
-// Make sure to clear the ORE flag in the USART2 interrupt handler to prevent it
-// from blocking further interrupts.
 extern "C" void USART2_IRQHandler(void) {
-  // Check if data is available
   if (usart.get_addr()->SR & USART_SR_RXNE) {
     if (board.usart.receive(rx_byte)) {
-      // received 1 byte, echo it back
       std::span<const uint8_t> tx_span(&rx_byte, 1);
       board.usart.send(tx_span);
     }

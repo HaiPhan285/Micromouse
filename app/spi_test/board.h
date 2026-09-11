@@ -3,7 +3,6 @@
 #include "spi.h"
 #include "stm32f4xx.h"
 
-// do the cmake
 
 namespace MM {
 

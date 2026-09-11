@@ -1,9 +1,3 @@
-/**
- * @file board.h
- * @brief PID controller board interface — dual motor (left / right)
- * @author Bex Saw
- * @date 3/31/2026
- */
 
 #pragma once
 
@@ -19,7 +13,6 @@
 namespace MM {
 
 struct Board {
-  // Left motor
   Encoder& encoder_left;
   Pwm& pwm1_left;
   Pwm& pwm2_left;
@@ -29,7 +22,6 @@ struct Board {
   Gpio& enc_left_ch1;
   Gpio& enc_left_ch2;
 
-  // Right motor
   Encoder& encoder_right;
   Pwm& pwm1_right;
   Pwm& pwm2_right;

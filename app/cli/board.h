@@ -1,8 +1,3 @@
-/**
- * @file board.h
- * @brief CLI app board interface — exposes all hardware peripherals.
- * @author Bex Saw
- */
 
 #pragma once
 
@@ -15,11 +10,9 @@
 namespace MM {
 
 struct Board {
-  // Motion hardware
   MotionController& motion_controller;
   IrController& ir_controller;
 
-  // UI hardware
   Gpio& led1;
   Gpio& led2;
   Gpio& led3;

@@ -1,8 +1,3 @@
-/**
- * @file main.cc
- * @brief Navigation app — full floodfill + motion pipeline.
- * @author Bex Saw
- */
 
 #include "board.h"
 #include "delay.h"
@@ -18,7 +13,6 @@ int main() {
   Board& hw = get_board();
   Navigation nav;
 
-  // Wait for PB4 button press (active low) before starting
   while (hw.start_bt.read() != 0) {
   }
   Utils::delay_ms(50); // debounce

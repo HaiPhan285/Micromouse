@@ -6,7 +6,6 @@
 #include <cstdint>
 
 namespace MM {
-// Static pin/I2C/IMU objects for F4 board
 Stmf4::StGpioSettings gpio_settings{Stmf4::GpioMode::AF, Stmf4::GpioOtype::OPEN_DRAIN,
                                     Stmf4::GpioOspeed::LOW, Stmf4::GpioPupd::PULL_UP, 4};
 
@@ -35,7 +34,6 @@ MM::Stmf4::HwClk clock{MM::Stmf4::Configuration::SYSCLK_HSE_24MHZ};
 
 bool bsp_init() {
   clock.init();
-  // Enable GPIOB and I2C1 clocks
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
   RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
 
@@ -44,7 +42,6 @@ bool bsp_init() {
   i2c.init();
   rst.init();
 
-  // BNO055 reset sequence
   rst.set(0); // Hold BNO055 in reset
   MM::Utils::delay_ms(10);
   rst.set(1);               // Release reset
@@ -54,7 +51,6 @@ bool bsp_init() {
   uint8_t chip_id = 0;
   bool ok = imu.get_chip_id(chip_id);
   if (!ok || chip_id != 0xA0) {
-    // IMU not detected or wrong chip ID
     return false;
   }
   return true;

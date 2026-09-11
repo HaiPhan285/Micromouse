@@ -16,15 +16,12 @@ int main() {
   bsp_init();
   Board& hw = get_board();
 
-  // pwm
   hw.pwm1.set_frequency(2000);
   hw.pwm2.set_frequency(2000);
 
-  // encoder
   uint32_t cycles_per_us = hw.encoder.cycles_per_us();
   const uint32_t sample_cycles = kSampleTimeUs * cycles_per_us;
 
-  // Drv8231
   hw.motor.drive(Drv8231::Direction::FORWARD, 50);
 
   while (1) {

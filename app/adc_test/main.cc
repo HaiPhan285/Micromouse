@@ -19,19 +19,15 @@ int main(int argc, char* argv[]) {
   Board& board = get_board();
   result &= board.ir_led.set(1);
 
-  // DMA destination buffer to inspect in debugger.
   std::array<uint16_t, kNumSamples> samples{0, 0, 0, 0};
 
   while (1) {
     std::array<uint8_t, 128> tx_buf{};
-    // Re-arm DMA to the beginning of samples for each 4-conversion burst.
     result &= board.dma.arm_p2m(reinterpret_cast<uintptr_t>(samples.data()), kNumSamples);
     result &= board.dma.start();
 
-    // Start one regular-sequence conversion (4 ranks configured in board setup).
     result &= board.adc.convert(true, 4);
 
-    // Wait until DMA finishes transfers, but avoid deadlock on DMA fault.
     const uint32_t start_ms = MM::Utils::get_ms_ticks();
     while (!board.dma.complete()) {
       const uint32_t elapsed_ms = MM::Utils::get_ms_ticks() - start_ms;

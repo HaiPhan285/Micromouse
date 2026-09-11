@@ -1,8 +1,3 @@
-/**
- * @file board.h
- * @author Bex Saw
- * @brief Board specific definitions for Bluetooth USART test on F411
- */
 
 #pragma once
 #include "gpio.h"
@@ -14,7 +9,6 @@ struct Board {
   Usart& usart;
   Gpio& rx;
   Gpio& tx;
-  // Gpio& key;  // KEY pin for controlling HC-05 mode
 };
 
 bool bsp_init();

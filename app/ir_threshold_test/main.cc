@@ -1,11 +1,3 @@
-/**
- * @file main.cc
- * @brief IR threshold test — prints raw sensor values and wall detections via USART.
- *        Use this to verify/tune kThresholdFront and kThresholdSide in floodfill.cc.
- *
- * Output format (every 10 IR sequences, ~100 ms):
- *   L:1234 FL:2100 FR:1850 R:3900 | left:open front:WALL right:WALL
- */
 
 #include "board.h"
 #include "delay.h"
@@ -17,7 +9,6 @@ using namespace MM;
 uint8_t rx_byte = 0;
 
 namespace {
-// Must match values in floodfill.cc — tune them together.
 constexpr uint16_t kThresholdFront{2000};
 constexpr uint16_t kThresholdSide{2000};
 

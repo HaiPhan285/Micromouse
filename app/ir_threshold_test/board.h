@@ -1,8 +1,3 @@
-/**
- * @file board.h
- * @author Kent Hong
- * @brief BSP Interface for IR Controller testing.
- */
 
 #pragma once
 #include "ircontroller.h"

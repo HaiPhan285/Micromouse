@@ -1,9 +1,3 @@
-/**
- * @file board.h
- * @brief PID controller board interface
- * @author Bex Saw
- * @date 3/31/2026
- */
 
 #pragma once
 
@@ -20,17 +14,13 @@
 namespace MM {
 
 struct Board {
-  // ENCODER
   Encoder& encoder;
 
-  // PWM
   Pwm& pwm1;
   Pwm& pwm2;
 
-  // MOTOR
   Drv8231& motor;
 
-  // GPIO
   Gpio& in1;
   Gpio& in2;
   Gpio& encoder_ch1;
